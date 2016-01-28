@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MossClient.cs" />
+    <Compile Include="MossClientResult.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="Util\FileUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
