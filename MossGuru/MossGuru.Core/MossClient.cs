@@ -28,13 +28,13 @@ namespace MossGuru.Core
       this.serverAddress = serverAddress;
       this.port = port;
       this.userId = userId;
-      this.lang = lang;
+      this.lang = lang.Replace(" ", string.Empty);
       this.maxMatches = maxMatches;
       this.displayResults = displayResults;
       this.comment = comment;
     }
 
-    public MossClientResult SendFiles(DirectoryInfo baseDir, IEnumerable<DirectoryInfo> studentDirs, string[] extensions, string[] ignoreFolders = null)
+    public MossClientResult SendFiles(DirectoryInfo baseDir, IEnumerable<DirectoryInfo> studentDirs, string[] extensions = null, string[] ignoreFolders = null)
     {
       IPEndPoint endPoint;
       try
@@ -81,7 +81,7 @@ namespace MossGuru.Core
 
             this.SendOption("query 0", this.comment, stream);
 
-            MossStatusUpdate?.Invoke($"{fCount-1} files sent. waiting for server response", 0.99);
+            MossStatusUpdate?.Invoke($"{fCount - 1} files sent. waiting for server response", 0.99);
             var responseBytes = new byte[512];
             var bytesRead = stream.Read(responseBytes, 0, 512);
             var response = Encoding.UTF8.GetString(responseBytes, 0, bytesRead);
