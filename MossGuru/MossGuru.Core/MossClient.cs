@@ -5,8 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using MossGuru.Core.Util;
 
 namespace MossGuru.Core
 {
@@ -33,7 +32,7 @@ namespace MossGuru.Core
       this.comment = comment;
     }
 
-    public MossClientResult SendFiles(ICollection<FileInfo> files)
+    public MossClientResult SendFiles(DirectoryInfo baseDir, IEnumerable<DirectoryInfo> studentDirs, string extension, string[] ignoreFolders = null)
     {
       var address = Dns.GetHostEntry(this.serverAddress).AddressList[0];
       var endPoint = new IPEndPoint(address, this.port);
@@ -55,12 +54,18 @@ namespace MossGuru.Core
 
             MossStatusUpdate?.Invoke("Initialized. Sending files...", null);
 
-            // send files
             int fCount = 1;
-            foreach (var file in files)
+            var totalFiles = studentDirs.Sum(s => FileUtils.GetFilesFromDir(s.FullName, extension, ignoreFolders).Count());
+            foreach (var dir in studentDirs)
             {
-              MossStatusUpdate?.Invoke($"sending File: {file.FullName}...", (double)(fCount - 1) / files.Count);
-              this.SendFile(file, this.lang, fCount++, stream, client.Client);
+              var studentFiles = FileUtils.GetFilesFromDir(dir.FullName, extension, ignoreFolders);
+
+              foreach (var file in studentFiles)
+              {
+                var fileName = $@"{dir.Name}/{file.FullName.Substring(baseDir.FullName.Length).Substring(1).Replace("\\", "_")}";
+                MossStatusUpdate?.Invoke($"sending File: {file.FullName}...", (double)(fCount - 1) / totalFiles);
+                this.SendFile(file, fileName, this.lang, fCount++, stream, client.Client);
+              }
             }
 
             this.SendOption("query 0", this.comment, stream);
@@ -89,10 +94,10 @@ namespace MossGuru.Core
       }
     }
 
-    private void SendFile(FileInfo file, string lang, int number, NetworkStream stream, Socket socket)
+    private void SendFile(FileInfo file, string fileName, string lang, int number, NetworkStream stream, Socket socket)
     {
       var fileBytes = Encoding.UTF8.GetBytes(File.ReadAllText(file.FullName));
-      var filestr = $"{number} {lang} {fileBytes.Length} {file.FullName.Replace("\\", "/")}";
+      var filestr = $"{number} {lang} {fileBytes.Length} {fileName}";
 
       this.SendOption("file", filestr, stream);
       this.Send(fileBytes, stream);
