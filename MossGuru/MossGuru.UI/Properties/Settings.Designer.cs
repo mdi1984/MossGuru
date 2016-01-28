@@ -8,23 +8,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MossGuru.UI.Properties
-{
-
-
-  [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-  [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-  internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-  {
-
-    private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-    public static Settings Default
-    {
-      get
-      {
-        return defaultInstance;
-      }
+namespace MossGuru.UI.Properties {
+    
+    
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("c,cc,java,ml,pascal,ada,lisp,scheme,haskell,fortran,ascii,vhdl,perl,matlab,python" +
+            ",mips,prolog,spice,vb,csharp,modula2,a8086,javascript,plsql,verilog")]
+        public string mossLanguages {
+            get {
+                return ((string)(this["mossLanguages"]));
+            }
+        }
     }
-  }
 }
