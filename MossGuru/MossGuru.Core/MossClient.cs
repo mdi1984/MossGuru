@@ -13,8 +13,8 @@ namespace MossGuru.Core
 
   public class MossClient
   {
-    private readonly string serverAddress = "moss.stanford.edu";
-    private readonly int port = 7690;
+    private readonly string serverAddress;
+    private readonly int port;
     private readonly string userId;
     private readonly int maxMatches;
     private readonly int displayResults;
@@ -23,8 +23,10 @@ namespace MossGuru.Core
 
     public event MossStatusUpdateHandler MossStatusUpdate;
 
-    public MossClient(string userId, string lang, int maxMatches, int displayResults, string comment)
+    public MossClient(string serverAddress, int port, string userId, string lang, int maxMatches, int displayResults, string comment)
     {
+      this.serverAddress = serverAddress;
+      this.port = port;
       this.userId = userId;
       this.lang = lang;
       this.maxMatches = maxMatches;
