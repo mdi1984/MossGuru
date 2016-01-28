@@ -5,7 +5,6 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MossGuru.Core", "MossGuru.Core\MossGuru.Core.csproj", "{267D9C00-CDA0-4A84-A276-2B0100ACFC03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MossGuru.Playground", "MossGuru.Playground\MossGuru.Playground.csproj", "{979633C2-E8A0-4118-BDAC-3603BA217157}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
