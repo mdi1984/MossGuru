@@ -87,8 +87,6 @@ namespace MossGuru.Core
             var response = Encoding.UTF8.GetString(responseBytes, 0, bytesRead);
             this.SendOption("end", string.Empty, stream);
 
-            // Uri result = null;
-            // if (Uri.TryCreate(Encoding.UTF8.GetString(response, 0, bytesRead), UriKind.Absolute, out result))
             if (Uri.IsWellFormedUriString(response, UriKind.Absolute))
             {
               return new MossClientResult() { Success = true, ResultUri = new Uri(response) };
