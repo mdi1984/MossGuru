@@ -1,10 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MossGuru.Core", "MossGuru.Core\MossGuru.Core.csproj", "{267D9C00-CDA0-4A84-A276-2B0100ACFC03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MossGuru.UI", "MossGuru.UI\MossGuru.UI.csproj", "{7BC07428-8E92-4866-A90D-E09647A56760}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,6 +17,10 @@ Global
 		{267D9C00-CDA0-4A84-A276-2B0100ACFC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{267D9C00-CDA0-4A84-A276-2B0100ACFC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{267D9C00-CDA0-4A84-A276-2B0100ACFC03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BC07428-8E92-4866-A90D-E09647A56760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BC07428-8E92-4866-A90D-E09647A56760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BC07428-8E92-4866-A90D-E09647A56760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BC07428-8E92-4866-A90D-E09647A56760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
