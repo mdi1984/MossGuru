@@ -26,7 +26,7 @@ namespace MossGuru.Core.Util
         throw new DirectoryNotFoundException();
       }
 
-      var files = dirInfo.GetFiles(string.Format("*.{0}", extension), SearchOption.AllDirectories);
+      var files = dirInfo.GetFiles($"*.{extension}", SearchOption.AllDirectories);
       return files.Where(f => !f.FullName.ContainsAny(ignoreFolders, StringComparison.CurrentCultureIgnoreCase)).ToList();
     }
   }

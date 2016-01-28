@@ -56,9 +56,10 @@ namespace MossGuru.Core
 
             MossStatusUpdate?.Invoke("Initialized. Sending files...", null);
 
-            int fCount = 1;
-            var totalFiles = studentDirs.Sum(s => FileUtils.GetFilesFromDir(s.FullName, extension, ignoreFolders).Count());
-            foreach (var dir in studentDirs)
+            var fCount = 1;
+            var directoryInfos = studentDirs as IList<DirectoryInfo> ?? studentDirs.ToList();
+            var totalFiles = directoryInfos.Sum(s => FileUtils.GetFilesFromDir(s.FullName, extension, ignoreFolders).Count());
+            foreach (var dir in directoryInfos)
             {
               var studentFiles = FileUtils.GetFilesFromDir(dir.FullName, extension, ignoreFolders);
 
