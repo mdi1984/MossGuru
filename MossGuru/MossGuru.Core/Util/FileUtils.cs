@@ -18,7 +18,7 @@ namespace MossGuru.Core.Util
       return dirInfo.GetDirectories("*", SearchOption.TopDirectoryOnly);
     }
 
-    public static IEnumerable<FileInfo> GetFilesFromDir(string path, string extension, string[] ignoreFolders = null)
+    public static IEnumerable<FileInfo> GetFilesFromDir(string path, string[] extensions, string[] ignoreFolders = null)
     {
       var dirInfo = new DirectoryInfo(path);
       if (!dirInfo.Exists)
@@ -26,7 +26,9 @@ namespace MossGuru.Core.Util
         throw new DirectoryNotFoundException();
       }
 
-      var files = dirInfo.GetFiles($"*.{extension}", SearchOption.AllDirectories);
+      var extensionStr = extensions.Aggregate((c, n) => $"{c}, *.{n}");
+      var files = dirInfo.EnumerateFiles("*", SearchOption.AllDirectories).Where(f => extensions.Contains(f.Extension)).ToList();
+
       return files.Where(f => !f.FullName.ContainsAny(ignoreFolders, StringComparison.CurrentCultureIgnoreCase)).ToList();
     }
   }
