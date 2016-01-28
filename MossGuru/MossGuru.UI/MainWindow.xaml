@@ -3,10 +3,147 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MossGuru.UI"
+        xmlns:m="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dvm="clr-namespace:MossGuru.UI.ViewModel"
+        xmlns:converter="clr-namespace:MossGuru.UI.Converter"
+        xmlns:b="clr-namespace:MossGuru.UI.Behaviours"
+        Title="MossGuru" 
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto"        
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{StaticResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Width="600"
+        SizeToContent="Height"
+        d:DataContext="{d:DesignInstance dvm:MainViewModel}"
+        >
+  <Window.Resources>
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBox}">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="Margin" Value="0 8 0 8" />
+    </Style>
+    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MaterialDesignComboBox}">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="Margin" Value="0 8 0 8" />
+    </Style>
+    <converter:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    <converter:BooleanInverter x:Key="BooleanInverter" />
+  </Window.Resources>
+  <Grid b:ValidationBehavior.HasError="{Binding HasValidationError, UpdateSourceTrigger=PropertyChanged}" Validation.ErrorTemplate="{x:Null}">
+    <Grid.BindingGroup>
+      <BindingGroup Name="validationGroup" />
+    </Grid.BindingGroup>
+
+    <Grid x:Name="Overlay" Panel.ZIndex="1000" Visibility="{Binding Path=IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+      <Grid.Background>
+        <SolidColorBrush Color="Black" Opacity=".2"/>
+      </Grid.Background>
+
+      <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
+						 Value="0"
+						 IsIndeterminate="True"
+						 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="12 12 12 12"/>
+      <TextBlock Text="{Binding ClientState}" FontWeight="Bold" Foreground="DarkRed" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 60 0 0"></TextBlock>
     </Grid>
+
+    <Grid Margin="10">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <GroupBox Grid.Row="0" Header="Settings" Padding="10">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="16 0 8 0" Text="UserId" />
+          <TextBox Grid.Row="0" Grid.Column="1" 
+                 Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+
+          <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="16 0 8 0" Text="Language:" />
+          <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" />
+
+          <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="16 0 8 0" Text="MaxMatches:" />
+          <TextBox Grid.Row="0" Grid.Column="4" 
+                 Text="{Binding MaxMatches, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+
+          <TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="16 0 8 0" Text="# of results" />
+          <TextBox Grid.Row="1" Grid.Column="4" 
+                 Text="{Binding DisplayResults, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+
+          <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="16 0 8 0" Text="Extensions:" />
+          <TextBox Grid.Row="2" Grid.Column="1" 
+                   Text="{Binding ExtensionsString, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+
+          <TextBlock Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="16 0 8 0" Text="Ignore Folders:" />
+          <TextBox Grid.Row="2" Grid.Column="4" 
+                 Text="{Binding IgnoreFoldersString, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+        </Grid>
+      </GroupBox>
+
+      <GroupBox Grid.Row="1" Header="Folders" Padding="10">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding SelectedFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+          <StackPanel Grid.Row="0" Grid.Column="4" Orientation="Horizontal">
+            <Button Command="{Binding OpenFolderCommand}" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Left">
+              <Viewbox>
+                <Canvas Width="24" Height="24">
+                  <Path Data="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z" Fill="Black" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+
+            <Button Command="{Binding ScanFolderCommand}" Background="Transparent" BorderBrush="Transparent" Margin="10 0 0 0">
+              <Viewbox>
+                <Canvas Width="24" Height="24">
+                  <Path Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" Fill="Black" />
+                </Canvas>
+              </Viewbox>
+            </Button>
+
+          </StackPanel>
+          <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto" MaxHeight="300">
+            <ListBox ItemsSource="{Binding StudentFolders}"/>
+          </ScrollViewer>
+          <StackPanel Grid.Row="1" Grid.Column="4" Margin="10 50 10 0">
+            <Button Content="Submit" VerticalAlignment="Bottom" Margin="0 0 0 20" Command="{Binding SubmitCommand}" />
+                    <!--IsEnabled="{Binding ElementName=gdMain, Path=(Validation.HasError), Converter={StaticResource BooleanInverter}}" />-->
+            <TextBlock Text="Result:" FontWeight="Bold" Visibility="{Binding ResultUri, Converter={StaticResource NullToVisibilityConverter}}" />
+            <TextBlock Visibility="{Binding ResultUri, Converter={StaticResource NullToVisibilityConverter}}">
+              <Hyperlink NavigateUri="{Binding ResultUri.AbsoluteUri}" RequestNavigate="Hyperlink_RequestNavigate">
+                <TextBlock Text="{Binding ResultUri.AbsoluteUri}" TextWrapping="Wrap"/>
+              </Hyperlink>
+            </TextBlock>
+            <TextBlock Text="{Binding RequestErrorMsg}" Foreground="Red" TextWrapping="Wrap" />
+          </StackPanel>
+        </Grid>
+      </GroupBox>
+    </Grid>
+  </Grid>
 </Window>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MossGuru.UI.ViewModel;
 
 namespace MossGuru.UI
 {
@@ -23,6 +25,13 @@ namespace MossGuru.UI
     public MainWindow()
     {
       InitializeComponent();
+      this.DataContext = new MainViewModel();
+    }
+
+    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+      Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+      e.Handled = true;
     }
   }
 }
