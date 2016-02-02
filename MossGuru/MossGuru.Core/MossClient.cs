@@ -73,7 +73,7 @@ namespace MossGuru.Core
 
               foreach (var file in studentFiles)
               {
-                var fileName = $@"{dir.Name}/{file.FullName.Substring(baseDir.FullName.Length).Substring(1).Replace("\\", "_")}";
+                var fileName = $@"{dir.Name}/{file.FullName.Substring(baseDir.FullName.Length).Substring(1).Replace("\\", "_")}".RemoveWhiteSpaces();
                 MossStatusUpdate?.Invoke($"sending File: {file.FullName}...", ((double)(fCount - 1) / totalFiles) - 1);
                 this.SendFile(file, fileName, this.lang, fCount++, stream, client.Client);
               }
