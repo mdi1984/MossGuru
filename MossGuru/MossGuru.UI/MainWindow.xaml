@@ -75,7 +75,7 @@
                  Text="{Binding UserId, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
 
           <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="16 0 8 0" Text="Language:" />
-          <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" />
+          <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage, UpdateSourceTrigger=PropertyChanged}" />
 
           <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="16 0 8 0" Text="MaxMatches:" />
           <TextBox Grid.Row="0" Grid.Column="4" 

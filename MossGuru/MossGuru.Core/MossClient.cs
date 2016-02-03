@@ -61,6 +61,16 @@ namespace MossGuru.Core
             this.SendOption("X", "0", stream);
             this.SendOption("maxmatches", this.maxMatches.ToString(), stream);
             this.SendOption("show", this.displayResults.ToString(), stream);
+            this.SendOption("language", this.lang, stream);
+
+            var responseBytes = new byte[512];
+            var bytesRead = stream.Read(responseBytes, 0, 512);
+            var response = Encoding.UTF8.GetString(responseBytes, 0, bytesRead);
+
+            if (!response.StartsWith("yes"))
+            {
+              return new MossClientResult() { Success = false, Status = "invalid request" };
+            }
 
             MossStatusUpdate?.Invoke("Initialized. Sending files...", null);
 
@@ -82,9 +92,10 @@ namespace MossGuru.Core
             this.SendOption("query 0", this.comment, stream);
 
             MossStatusUpdate?.Invoke($"{fCount - 1} files sent. waiting for server response", 0.99);
-            var responseBytes = new byte[512];
-            var bytesRead = stream.Read(responseBytes, 0, 512);
-            var response = Encoding.UTF8.GetString(responseBytes, 0, bytesRead);
+            responseBytes = new byte[512];
+            bytesRead = stream.Read(responseBytes, 0, 512);
+            response = Encoding.UTF8.GetString(responseBytes, 0, bytesRead);
+
             this.SendOption("end", string.Empty, stream);
 
             if (Uri.IsWellFormedUriString(response, UriKind.Absolute))
