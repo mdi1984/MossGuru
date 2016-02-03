@@ -188,11 +188,11 @@ namespace MossGuru.UI.ViewModel
             this.ClientState = s;
           };
 
-          var extArray = Regex.Replace(this.ExtensionsString, @"\s+", "").Split(',');
+          var extArray = this.ExtensionsString.RemoveWhiteSpaces().Split(',');
           extArray = extArray.Select(s => s[0].Equals('.') ? s : s.Insert(0, ".")).ToArray();
           string[] ignoreArray = null;
           if(!string.IsNullOrEmpty(this.IgnoreFoldersString))
-            ignoreArray = Regex.Replace(this.IgnoreFoldersString, @"\s+", "").Split(',');
+            ignoreArray = this.IgnoreFoldersString.RemoveWhiteSpaces().Split(',');
 
           var result = client.SendFiles(baseDir, studentDirs, extArray, ignoreArray);
 
