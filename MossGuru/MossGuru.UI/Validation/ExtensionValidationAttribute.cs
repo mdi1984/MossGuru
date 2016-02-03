@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MossGuru.Core.Util;
 
 namespace MossGuru.UI.Validation
 {
@@ -16,9 +17,8 @@ namespace MossGuru.UI.Validation
       if (val == null)
         return ValidationResult.Success;
 
-      val = Regex.Replace(val, @"\s+", "");
-      var valArray = val.Split(',');
-      if (valArray.Any(extension => !Regex.IsMatch(extension, @"^[a-zA-Z]+$")))
+      var valArray = val.RemoveWhiteSpaces().Split(',');
+      if (valArray.Any(extension => !Regex.IsMatch(extension, @"^[a-zA-Z0-9]+$")))
       {
         return new ValidationResult(FormatErrorMessage(validationContext.DisplayName));
       }
